@@ -44,14 +44,14 @@ const HangmanSlice = createSlice({
           {char:char,isMatched:true}
         );
         state.score += 10;
-        state.wrongRight.map((item) => item.char == char && item.isMatched == true ? setIsShow("2px solid green") : "");
+        state.wrongRight.map((item) => item.char == char && item.isMatched == true ? setIsShow("green") : "");
         
       } else {
         state.wrongRight.push({ char: char, isMatched: false });
         if (state.maxAttepts > 1) {
           state.maxAttepts--
         }
-         setIsShow("2px solid red");
+         setIsShow("red");
       }
     },
     resetState: (state, action) => {
