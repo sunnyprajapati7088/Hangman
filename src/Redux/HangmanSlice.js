@@ -19,10 +19,12 @@ function transFormWord(word) {
     isMatched: "",
   }));
 }
-const randomCategoryItem = getRandomItem();
+ const randomCategoryItem = getRandomItem();
+
 const HangmanSlice = createSlice({
   name: "hangman",
   initialState: {
+   
     randomCategory: randomCategoryItem.category,
     randomHintWord: randomCategoryItem.word,
     maxAttepts: 6,
@@ -33,24 +35,37 @@ const HangmanSlice = createSlice({
   reducers: {
     playerInput: (state, action) => {
       const word = state.randomHintWord;
-      if (word.includes(action.payload)) {
+      const { char, setIsShow } = action.payload;
+      if (word.includes(char)) {
         state.guessWord.forEach((item) =>
-          item.char === action.payload ? (item.isMatched = true) : ""
+          item.char === char ? (item.isMatched = true) : ""
         );
         state.wrongRight.push(
-          state.guessWord.filter((item) => item.isMatched == true)
+          {char:char,isMatched:true}
         );
         state.score += 10;
+        state.wrongRight.map((item) => item.char == char && item.isMatched == true ? setIsShow("2px solid green") : "");
+        
       } else {
-        state.wrongRight.push({ char: action.payload, isMatched: false });
+        state.wrongRight.push({ char: char, isMatched: false });
         if (state.maxAttepts > 1) {
           state.maxAttepts--
         }
+         setIsShow("2px solid red");
       }
     },
+    resetState: (state, action) => {
+         (state.randomCategory = randomCategoryItem.category),
+         (state.randomHintWord = randomCategoryItem.word),
+         (state.maxAttepts = 6),
+         (state.score = 0),
+         (state.guessWord = transFormWord(randomCategoryItem.word)),
+         (state.wrongRight = []);
+     
+    }
   },
 });
-export const { playerInput } = HangmanSlice.actions;
+export const { playerInput, resetState } = HangmanSlice.actions;
 export default HangmanSlice.reducer;
 
 export const selectgueesData = (state) => {
@@ -59,3 +74,9 @@ export const selectgueesData = (state) => {
 export const selectAllState = (state) => {
   return state.hangman;
 };
+
+export const selectCorrectGuessWordLength=(state)=>{
+  let correctWordLength = 0;
+ state.hangman.guessWord.forEach((element) => { element.isMatched == true ? correctWordLength++ : "" })
+  return correctWordLength;
+}
