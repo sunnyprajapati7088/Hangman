@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react";
 const items = {
   FRUIT: ["APPLE", "BANANA", "ORANGE", "GRAPE"],
   CLOTHE: ["SHIRT", "PANTS", "JACKET", "DRESS"],
@@ -48,7 +49,7 @@ const HangmanSlice = createSlice({
         
       } else {
         state.wrongRight.push({ char: char, isMatched: false });
-        if (state.maxAttepts > 1) {
+        if (state.maxAttepts > 0) {
           state.maxAttepts--
         }
          setIsShow("red");

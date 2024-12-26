@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import {
   playerInput,
+  resetState,
   selectAllState,
-  selectCorrectGuessWordLength,
+  selectCorrectGuessWordLength
 } from "../Redux/HangmanSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+ 
 function KeyChar({ char }) {
   const [isShow, setIsShow] = useState("");
   const dispatch = useDispatch();
@@ -13,7 +15,22 @@ function KeyChar({ char }) {
     console.log(char);
     dispatch(playerInput({ char, setIsShow }));
   }
-  console.log(isShow,char)
+  console.log(isShow, char);
+
+    const allState = useSelector(selectAllState);
+    const guessWordLength = allState.randomHintWord.length;
+    const correctWord = useSelector(selectCorrectGuessWordLength);
+  
+    if (guessWordLength === correctWord) {
+        dispatch(resetState(setIsShow));
+        window.location.reload();
+      alert(`you won with score ${allState.score}`);
+    }
+    if (allState.maxAttepts == 0) {
+      dispatch(resetState(setIsShow));
+        alert("Game Over");
+        window.location.reload()
+    }
   return (
     <div
       onClick={() => handleInputs(char)}
@@ -23,7 +40,6 @@ function KeyChar({ char }) {
         cursor: isShow ? "not-allowed" : "pointer",
         backgroundColor:
           isShow === "green" ? "green" : isShow === "red" ? "red" : "",
-
         pointerEvents: isShow ? "none" : "auto",
       }}
     >

@@ -8,18 +8,7 @@ import { resetState, selectAllState, selectCorrectGuessWordLength, selectgueesDa
 import HangmanPage from './components/HangmanPage'
 function App() {
   console.log(useSelector(selectgueesData))
-  const allState= useSelector(selectAllState)
-  const guessWordLength =allState.randomHintWord.length;
-  const correctWord = useSelector(selectCorrectGuessWordLength)
-  const dispatch = useDispatch();
-    if (guessWordLength === correctWord) {
-      dispatch(resetState());
-      alert(`you won with score ${allState.score}`);
-    }
-  if (allState.maxAttepts == 0) {
-    dispatch(resetState());
-    alert("Game Over");
-  }
+ 
 
     return (
       <div>
