@@ -22,12 +22,12 @@ function KeyChar({ char }) {
     const correctWord = useSelector(selectCorrectGuessWordLength);
   
     if (guessWordLength === correctWord) {
-        dispatch(resetState(setIsShow));
+        dispatch(resetState());
         window.location.reload();
       alert(`you won with score ${allState.score}`);
     }
     if (allState.maxAttepts == 0) {
-      dispatch(resetState(setIsShow));
+      dispatch(resetState());
         alert("Game Over");
         window.location.reload()
     }

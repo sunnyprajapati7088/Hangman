@@ -20,12 +20,11 @@ function transFormWord(word) {
     isMatched: "",
   }));
 }
- const randomCategoryItem = getRandomItem();
+const randomCategoryItem = getRandomItem();
 
 const HangmanSlice = createSlice({
   name: "hangman",
   initialState: {
-   
     randomCategory: randomCategoryItem.category,
     randomHintWord: randomCategoryItem.word,
     maxAttepts: 6,
@@ -46,7 +45,6 @@ const HangmanSlice = createSlice({
         );
         state.score += 10;
         state.wrongRight.map((item) => item.char == char && item.isMatched == true ? setIsShow("green") : "");
-        
       } else {
         state.wrongRight.push({ char: char, isMatched: false });
         if (state.maxAttepts > 0) {
