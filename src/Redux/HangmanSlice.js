@@ -35,7 +35,7 @@ const HangmanSlice = createSlice({
   reducers: {
     playerInput: (state, action) => {
       const word = state.randomHintWord;
-      const { char, setIsShow } = action.payload;
+      const { char } = action.payload;
       if (word.includes(char)) {
         state.guessWord.forEach((item) =>
           item.char === char ? (item.isMatched = true) : ""
@@ -44,13 +44,12 @@ const HangmanSlice = createSlice({
           {char:char,isMatched:true}
         );
         state.score += 10;
-        state.wrongRight.map((item) => item.char == char && item.isMatched == true ? setIsShow("green") : "");
       } else {
         state.wrongRight.push({ char: char, isMatched: false });
         if (state.maxAttepts > 0) {
           state.maxAttepts--
         }
-         setIsShow("red");
+         
       }
     },
     resetState: (state, action) => {
@@ -79,3 +78,4 @@ export const selectCorrectGuessWordLength=(state)=>{
  state.hangman.guessWord.forEach((element) => { element.isMatched == true ? correctWordLength++ : "" })
   return correctWordLength;
 }
+

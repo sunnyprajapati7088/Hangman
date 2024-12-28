@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { resetState, selectAllState, selectCorrectGuessWordLength, selectgueesData } from './Redux/HangmanSlice'
 import HangmanPage from './components/HangmanPage'
 function App() {
-  console.log(useSelector(selectgueesData))
+  console.log(useSelector(selectAllState))
  
 
     return (

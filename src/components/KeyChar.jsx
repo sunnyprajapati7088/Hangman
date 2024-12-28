@@ -3,44 +3,50 @@ import {
   playerInput,
   resetState,
   selectAllState,
-  selectCorrectGuessWordLength
+  selectCorrectGuessWordLength,
 } from "../Redux/HangmanSlice";
 import { useDispatch, useSelector } from "react-redux";
 
- 
-function KeyChar({ char }) {
-  const [isShow, setIsShow] = useState("");
-  const dispatch = useDispatch();
-  function handleInputs(char) {
-    console.log(char);
-    dispatch(playerInput({ char, setIsShow }));
-  }
-  console.log(isShow, char);
+const findChar = (array, charToFind) => {
+  return array.find((item) => item.char === charToFind);
+};
 
-    const allState = useSelector(selectAllState);
-    const guessWordLength = allState.randomHintWord.length;
-    const correctWord = useSelector(selectCorrectGuessWordLength);
-  
-    if (guessWordLength === correctWord) {
-        dispatch(resetState());
-        window.location.reload();
-      alert(`you won with score ${allState.score}`);
-    }
-    if (allState.maxAttepts == 0) {
-      dispatch(resetState());
-        alert("Game Over");
-        window.location.reload()
-    }
+function KeyChar({ char }) {
+  const dispatch = useDispatch();
+  const allState = useSelector(selectAllState);
+  const guessWordLength = allState.randomHintWord.length;
+  const correctWordLength = useSelector(selectCorrectGuessWordLength);
+
+  const guessCharStatus = findChar(allState.wrongRight, char) || {
+    char: "",
+    isMatched: "",
+  };
+
+  function handleInputs(char) {
+    dispatch(playerInput({ char }));
+  }
+  if (guessWordLength === correctWordLength) {
+    dispatch(resetState());
+    alert(`you won with score ${allState.score}`);
+  }
+  if (allState.maxAttepts == 0) {
+    dispatch(resetState());
+    alert("Game Over");
+  }
   return (
     <div
       onClick={() => handleInputs(char)}
       style={{
         border: "1px solid black",
         padding: "10px",
-        cursor: isShow ? "not-allowed" : "pointer",
+        cursor: guessCharStatus.char ? "not-allowed" : "pointer",
         backgroundColor:
-          isShow === "green" ? "green" : isShow === "red" ? "red" : "",
-        pointerEvents: isShow ? "none" : "auto",
+          guessCharStatus.isMatched === true
+            ? "green"
+            : guessCharStatus.isMatched === false
+            ? "red"
+            : "",
+        pointerEvents: guessCharStatus.char ? "none" : "auto",
       }}
     >
       {char}
